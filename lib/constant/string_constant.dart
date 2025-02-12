@@ -114,4 +114,7 @@ class Strings {
   static const String passwordUser = "password_user";
 
   static const String filterPay = "filter_pay";
+
+
+  static const String homeScreen = '/homeScreen';
 }
