@@ -161,41 +161,47 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _body() {
-    return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.all(5.0),
-        child: Table(
-          border: TableBorder.all(),
-          defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-          columnWidths: const {
-            0: FlexColumnWidth(1.2),
-            1: FlexColumnWidth(1),
-            2: FlexColumnWidth(1),
-            3: FlexColumnWidth(1),
-            4: FlexColumnWidth(1),
-          },
-          children: [
-            TableRow(children: [
-              _title(''),
-              _textField('Jug. 1'),
-              _textField('Jug. 2'),
-              _textField('Jug. 3'),
-              _textField('Jug. 4'),
-            ]),
-            _tableNoBazas(),
-            _tableNoCorazones(),
-            _tableNojk(),
-            _tableNoq(),
-            _tableNok(),
-            _tableNoUltimate(),
-            _totalNeg(),
-            _tablePos1(),
-            _tablePos2(),
-            _tablePos3(),
-            _tablePos4(),
-            _totalPos(),
-            _totalFinal()
-          ],
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (context, result) {
+        _exit();
+      },
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8),
+          child: Table(
+            border: TableBorder.all(),
+            defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+            columnWidths: const {
+              0: FlexColumnWidth(1.2),
+              1: FlexColumnWidth(1),
+              2: FlexColumnWidth(1),
+              3: FlexColumnWidth(1),
+              4: FlexColumnWidth(1),
+            },
+            children: [
+              TableRow(children: [
+                _title(''),
+                _textField('Jug. 1'),
+                _textField('Jug. 2'),
+                _textField('Jug. 3'),
+                _textField('Jug. 4'),
+              ]),
+              _tableNoBazas(),
+              _tableNoCorazones(),
+              _tableNojk(),
+              _tableNoq(),
+              _tableNok(),
+              _tableNoUltimate(),
+              _totalNeg(),
+              _tablePos1(),
+              _tablePos2(),
+              _tablePos3(),
+              _tablePos4(),
+              _totalPos(),
+              _totalFinal()
+            ],
+          ),
         ),
       ),
     );
@@ -830,7 +836,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   TableRow _totalPos() {
     return TableRow(
-        decoration: BoxDecoration(color: Colors.lime.shade200),
+        decoration: BoxDecoration(color: Colors.green.shade200),
         children: [
           _title('TOTAL'),
           _cell('$_totalPos1'),
@@ -842,7 +848,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   TableRow _totalFinal() {
     return TableRow(
-        decoration: BoxDecoration(color: Colors.green.shade200),
+        decoration: BoxDecoration(color: Colors.lime.shade200),
         children: [
           _title('FINAL'),
           _cell('$_totalFinal1'),
@@ -888,12 +894,10 @@ class _HomeScreenState extends State<HomeScreen> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         _drop(cantBazas, list, onChanged),
-        Divider(
-          height: 1,
-        ),
+
         Text(
           "$valorBasas",
-          style: TextStyle(fontSize: 19.sp, fontWeight: FontWeight.bold),
+          style: TextStyle(fontSize: 18.5.sp, fontWeight: FontWeight.bold),
         ),
       ],
     );
@@ -913,7 +917,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _title(String value) {
     return Padding(
       padding: const EdgeInsets.only(left: 5),
-      child: Text(value),
+      child: Text(value, style: TextStyle(fontWeight: FontWeight.bold),),
     );
   }
 
@@ -924,25 +928,45 @@ class _HomeScreenState extends State<HomeScreen> {
             color: Colors.black, fontSize: 19.sp, fontWeight: FontWeight.bold));
   }
 
-  Widget _drop(int noBazas1, List<int> list, void Function(int?)? onChanged) {
-    return SizedBox(
-      height: 25,
+  Widget _drop(int value, List<int> list, void Function(int?)? onChanged) {
+    return Container(
+      height: 4.h,
+      width: double.infinity,
+      alignment: Alignment.center,
       child: DropdownButton<int>(
-        value: noBazas1,
-        isDense: true,
-        padding: const EdgeInsets.all(0),
+        value: value,
         items: list.map((int value) {
           return DropdownMenuItem<int>(
             value: value,
             child: Text(
               "$value",
-              style: TextStyle(color: Colors.black, fontSize: 15.sp),
             ),
           );
         }).toList(),
         onChanged: onChanged,
       ),
     );
+  }
+
+  void _exit() {
+    showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+              title: Text('¿Desea salir de la aplicación?'),
+              actions: [
+                TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      Navigator.pop(context);
+                    },
+                    child: Text('Aceptar')),
+                TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: Text('Cancelar')),
+              ],
+            ));
   }
 
   void _openDialog() {
